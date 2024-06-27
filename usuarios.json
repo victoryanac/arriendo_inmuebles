@@ -1,0 +1,1 @@
+[{"model": "inmuebles.usuario", "pk": 1, "fields": {"password": "1234", "last_login": "2024-06-11T22:40:42Z", "nombres": "Nombre Ejmeplo", "apellidos": "Apellido Ejemplo", "rut": "123456789", "direccion": "direccion 123, comuna", "telefono": "123456789", "tipo_usuario": "arrendador", "correo_electronico": "correo@correo.cl", "is_active": true, "is_staff": false}}]

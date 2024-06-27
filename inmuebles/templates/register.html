@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container mt-5">
+    <h2>Registro</h2>
+    <br>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.correo_electronico.label_tag }}
+            {{ form.correo_electronico }}
+        </div>
+        <div class="form-group">
+            {{ form.nombres.label_tag }}
+            {{ form.nombres }}
+        </div>
+        <div class="form-group">
+            {{ form.apellidos.label_tag }}
+            {{ form.apellidos }}
+        </div>
+        <div class="form-group">
+            {{ form.rut.label_tag }}
+            {{ form.rut }}
+        </div>
+        <div class="form-group">
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+        </div>
+        <div class="form-group">
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+    {% if form.errors %}
+        <div class="alert alert-danger mt-3">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
+
+

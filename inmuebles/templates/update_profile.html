@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Update Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.nombres.label_tag }}
+            {{ form.nombres }}
+        </div>
+        <div class="form-group">
+            {{ form.apellidos.label_tag }}
+            {{ form.apellidos }}
+        </div>
+        <div class="form-group">
+            {{ form.telefono.label_tag }}
+            {{ form.telefono }}
+        </div>
+        <div class="form-group">
+            {{ form.direccion.label_tag }}
+            {{ form.direccion }}
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
+{% endblock %}

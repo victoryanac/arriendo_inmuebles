@@ -14,15 +14,22 @@ class Comuna(models.Model):
         return self.nombre
 
 class UsuarioManager(BaseUserManager):
-    def create_user(self, correo_electronico, password=None, **extra_fields):
+    def create_user(self, username, correo_electronico, password=None, **extra_fields):
+        if not username:
+            raise ValueError('Los usuarios deben tener un nombre de usuario')
         if not correo_electronico:
             raise ValueError('Los usuarios deben tener una dirección de correo electrónico')
-        user = self.model(correo_electronico=self.normalize_email(correo_electronico), **extra_fields)
+        
+        user = self.model(
+            username=username,
+            correo_electronico=self.normalize_email(correo_electronico),
+            **extra_fields
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, correo_electronico, password, **extra_fields):
+    def create_superuser(self, username, correo_electronico, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -31,7 +38,7 @@ class UsuarioManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser debe tener is_superuser=True.')
 
-        return self.create_user(correo_electronico, password, **extra_fields)
+        return self.create_user(username, correo_electronico, password, **extra_fields)
 
 class Usuario(AbstractBaseUser):
     TIPO_USUARIO_CHOICES = [
@@ -74,7 +81,7 @@ class Inmueble(models.Model):
     nombre = models.CharField(max_length=50)
     direccion = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=500)
-    imagen = models.ImageField(upload_to='inmuebles/', null=True, blank=True)
+    imagen_url = models.URLField(max_length=200, null=True, blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=0)
     comuna = models.ForeignKey(Comuna, related_name='inmuebles', on_delete=models.CASCADE)
     disponible = models.BooleanField(default=True)

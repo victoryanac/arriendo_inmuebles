@@ -48,11 +48,22 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="index.html" class="active">Home</a></li>
-                        <li><a href="properties.html">Properties</a></li>
-                        <li><a href="property-details.html">Property Details</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a></li>
+                        <li><a href="{% url 'index' %}" class="active">Home</a></li>
+                        <li><a href="#">Properties</a></li>
+                        <li><a href="#">Property Details</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <ul class="navbar-nav ml-auto">
+                            {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <p class="d-inline">Bienvenido {{ user.username }}</p>
+                                <a class="nav-link d-inline" href="{% url 'logout' %}">Cerrar sesión</a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+                            </li>
+                            {% endif %}
+                        </ul>
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -63,3 +74,4 @@
         </div>
     </div>
 </header>
+

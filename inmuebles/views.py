@@ -3,26 +3,25 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Inmueble
-from .forms import InmuebleForm, SolicitudArriendoForm 
+from .forms import InmuebleForm, SolicitudArriendoForm, UserRegisterForm, UserUpdateForm
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 
 # Obtener el modelo de usuario personalizado
 Usuario = get_user_model()
 
-def index(request):
-    inmuebles = Inmueble.objects.all()  # Obtiene todos los inmuebles
-    return render(request, 'index.html', {'inmuebles': inmuebles})
 
-# Vista para el registro de usuarios
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Usuario registrado exitosamente!')
-            return redirect('login')
+def index(request):
+    tipo_inmueble = request.GET.get('tipo', None)
+    if tipo_inmueble:
+        inmuebles = Inmueble.objects.filter(tipo_de_inmueble=tipo_inmueble)
     else:
-        form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+        inmuebles = Inmueble.objects.all()
+    return render(request, 'index.html', {'inmuebles': inmuebles, 'tipo_inmueble': tipo_inmueble})
+
+
+
 
 # Vista para listar todos los inmuebles
 def inmueble_list(request):
@@ -37,7 +36,7 @@ def inmueble_detail(request, pk):
 # Vista para crear un nuevo inmueble
 def inmueble_create(request):
     if request.method == 'POST':
-        form = InmuebleForm(request.POST, request.FILES)
+        form = InmuebleForm(request.POST)
         if form.is_valid():
             new_inmueble = form.save(commit=False)
             # Asumiendo que necesitas asignar algún atributo adicional como el propietario
@@ -70,3 +69,37 @@ def solicitud_arriendo_create(request):
     else:
         form = SolicitudArriendoForm()
     return render(request, 'solicitud_arriendo_form.html', {'form': form})
+
+
+
+#registro de usuarios
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuario registrado exitosamente!')
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'register.html', {'form': form})
+
+
+
+
+@login_required
+def user_profile(request):
+    return render(request, 'profile.html', {'user': request.user})
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserUpdateForm(instance=request.user)
+    return render(request, 'update_profile.html', {'form': form})
+
+
