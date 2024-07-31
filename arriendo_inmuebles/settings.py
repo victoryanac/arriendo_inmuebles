@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'arriendo_inmuebles.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'inmuebles', #nombre de la base de datos creada en el pgadmin
-        'USER':'postgres', #usuario de la base de datos postgres
-        'PASSWORD':'1234', #contrasena de la base de datos postgres
+        'NAME': '', #nombre de la base de datos creada en el pgadmin
+        'USER':'', #usuario de la base de datos postgres
+        'PASSWORD':'', #contrasena de la base de datos postgres
         'HOST' : '127.0.0.1', #host local default
         'PORT': '5432', #puesto de postgrest
     }
